@@ -57,6 +57,7 @@ repos:
         args:
           - --number
         additional_dependencies:
+          - mdformat-gfm
           - mdformat-myst
           - mdformat-toc
           - mdformat-deflist

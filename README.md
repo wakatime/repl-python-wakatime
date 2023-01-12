@@ -36,33 +36,59 @@
 [![pypi/implementation](https://shields.io/pypi/implementation/python-wakatime)](https://pypi.org/project/python-wakatime/#files)
 [![pypi/pyversions](https://shields.io/pypi/pyversions/python-wakatime)](https://pypi.org/project/python-wakatime/#files)
 
-[wakatime](https://wakatime.com) plugin for python.
+[wakatime](https://wakatime.com) plugin for python REPLs.
 
-## Usage
+Supported REPLs:
 
-Add the following code to your
-[`$PYTHON_STARTUP`](https://docs.python.org/3/using/cmdline.html#envvar-PYTHONSTARTUP):
+- [x] [python](https://github.com/python/cpython):
+  - executes
+    [`str(sys.ps1)`](https://docs.python.org/3/library/sys.html#sys.ps1) after
+    every input.
+  - configure file:
+    [`$PYTHON_STARTUP`](https://docs.python.org/3/using/cmdline.html#envvar-PYTHONSTARTUP).
 
 ```python
-from python_wakatime import install_hook
+from python_wakatime.python import install_hook
 
-# ... # customize your PS1
-
-# must after customization of PS1, best at the end of file
 install_hook()
 ```
 
-## FAQ
+- [x] [ptpython](https://github.com/prompt-toolkit/ptpython):
+  - executes `get_ptpython().get_output_prompt()` after every output.
+  - configure file: `.../ptpython/config.py`. `...` depends on OS.
 
-Q: How does it work?
+```python
+from ptpython.repl import PythonRepl
+from python_wakatime.ptpython import install_hook
 
-A: Python executes
-[`str(sys.ps1)`](https://docs.python.org/3/library/sys.html#sys.ps1) after
-every inputting of the user. We can do anything what we want in
-`sys.ps1.__str__()`.
+
+def configure(repl: PythonRepl) -> None:
+    install_hook(repl)
+```
+
+- [x] [ipython](https://github.com/ipython/ipython):
+  - executes
+    `c.TerminalInteractiveShell.prompts_class(shell).out_prompt_tokens()` after
+    every output.
+  - configure file: `~/.ipython/profile_default/ipython_config.py`.
+
+```python
+from python_wakatime.iptpython import install_hook
+
+install_hook(c)
+```
+
+- [x] [ptipython](https://github.com/prompt-toolkit/ptpython): Same as
+  [ipython](https://github.com/ipython/ipython).
+- [ ] [bpython](https://github.com/bpython/bpython)
+- [ ] [xonsh](https://github.com/xonsh/xonsh)
+- [ ] [mypython](https://github.com/asmeurer/mypython): Won't fix.
+  - configure file: non-exist.
+
+`install_hook()` must after customization of prompt string, best at the end of file.
 
 ## Similar projects
 
-- <https://wakatime.com/terminal> lists wakatime plugins for bash/zsh/fish.
+- <https://wakatime.com/terminal> lists wakatime plugins for many shells.
 
 See more in [document](https://python-wakatime.readthedocs.io).
