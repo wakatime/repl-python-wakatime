@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 # https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 [project]
-name = "python-wakatime"
-description = "wakatime plugin for python REPLs"
+name = "repl-python-wakatime"
+description = "Python REPL plugin for automatic time tracking and metrics generated from your programming activity."
 authors = [{ name = "Wu Zhenyu", email = "wuzhenyu@ustc.edu" }]
 readme = "README.md"
 requires-python = ">= 3.9"
-keywords = ["wakatime", "plugin", "python"]
+keywords = ["wakatime", "plugin", "python", "ipython", "ptpython"]
 license = { text = "GPL v3" }
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -33,10 +33,10 @@ classifiers = [
 dynamic = ["version", "optional-dependencies"]
 
 [project.urls]
-Homepage = "https://python-wakatime.readthedocs.io"
-Download = "https://github.com/Freed-Wu/python-wakatime/releases"
-"Bug Report" = "https://github.com/Freed-Wu/python-wakatime/issues"
-Source = "https://github.com/Freed-Wu/python-wakatime"
+Homepage = "https://repl-python-wakatime.readthedocs.io"
+Download = "https://github.com/wakatime/repl-python-wakatime/releases"
+"Bug Report" = "https://github.com/wakatime/repl-python-wakatime/issues"
+Source = "https://github.com/wakatime/repl-python-wakatime"
 
 [tool.setuptools.package-data]
 python_wakatime = ["py.typed", "assets/*"]

@@ -6,6 +6,6 @@ authors:
   - family-names: Wu
     given-names: Zhenyu
     orcid: https://orcid.org/0000-0001-6478-9993
-title: "python-wakatime: wakatime plugin for python REPLs"
+title: "repl-python-wakatime: Python REPL plugin for automatic time tracking and metrics generated from your programming activity."
 date-released: 2023-01-12
-url: https://github.com/Freed-Wu/python-wakatime
+url: https://github.com/wakatime/repl-python-wakatime
