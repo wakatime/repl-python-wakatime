@@ -49,7 +49,7 @@ Supported REPLs:
     [`$PYTHON_STARTUP`](https://docs.python.org/3/using/cmdline.html#envvar-PYTHONSTARTUP).
 
 ```python
-from python_wakatime.python import install_hook
+from repl_python_wakatime.python import install_hook
 
 install_hook()
 ```
@@ -60,7 +60,7 @@ install_hook()
 
 ```python
 from ptpython.repl import PythonRepl
-from python_wakatime.ptpython import install_hook
+from repl_python_wakatime.ptpython import install_hook
 
 
 def configure(repl: PythonRepl) -> None:
@@ -74,7 +74,7 @@ def configure(repl: PythonRepl) -> None:
   - configure file: `~/.ipython/profile_default/ipython_config.py`.
 
 ```python
-from python_wakatime.iptpython import install_hook
+from repl_python_wakatime.iptpython import install_hook
 
 install_hook(c)
 ```

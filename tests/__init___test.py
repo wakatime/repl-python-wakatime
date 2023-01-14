@@ -4,7 +4,7 @@
 import os
 from pathlib import Path
 
-from python_wakatime.utils import get_project
+from repl_python_wakatime.utils import get_project
 
 
 class Test:

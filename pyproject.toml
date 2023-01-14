@@ -39,16 +39,16 @@ Download = "https://github.com/wakatime/repl-python-wakatime/releases"
 Source = "https://github.com/wakatime/repl-python-wakatime"
 
 [tool.setuptools.package-data]
-python_wakatime = ["py.typed", "assets/*"]
+repl_python_wakatime = ["py.typed", "assets/*"]
 
 [tool.setuptools.dynamic.optional-dependencies]
 dev = { file = "requirements/dev.txt" }
 
 [tool.setuptools_scm]
-write_to = "src/python_wakatime/_version.py"
+write_to = "src/repl_python_wakatime/_version.py"
 
 [tool.setuptools-generate]
-write-to = "src/python_wakatime/_metainfo.py"
+write-to = "src/repl_python_wakatime/_metainfo.py"
 
 [tool.black]
 line-length = 79
