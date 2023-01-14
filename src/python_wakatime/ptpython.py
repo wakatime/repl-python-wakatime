@@ -60,7 +60,7 @@ class Ps(PromptStyle):
 
         :rtype: AnyFormattedText
         """
-        self.hook(*self.args, **self.kwargs)
+        self.hook(self.args, self.kwargs)
         return self.prompt_style.out_prompt()
 
 
@@ -68,7 +68,7 @@ def install_hook(
     repl: PythonRepl,
     hook: Callable = wakatime_hook,
     args: tuple = (),
-    kwargs: dict[str, Any] = {},
+    kwargs: dict[str, Any] = {"plugin": "repl-ptpython-wakatime"},
     hook_prefix: str = "ps1_",
 ) -> PythonRepl:
     """Install hook.

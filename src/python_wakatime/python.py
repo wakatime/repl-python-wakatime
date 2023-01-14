@@ -45,7 +45,7 @@ class Ps1:
 
         :rtype: str
         """
-        self.hook(*self.args, **self.kwargs)
+        self.hook(self.args, self.kwargs)
         if isinstance(self.ps1, str):
             return self.ps1
         else:
@@ -55,7 +55,7 @@ class Ps1:
 def install_hook(
     hook: Callable = wakatime_hook,
     args: tuple = (),
-    kwargs: dict[str, Any] = {},
+    kwargs: dict[str, Any] = {"plugin": "repl-python-wakatime"},
 ) -> object:
     """Install hook.
 

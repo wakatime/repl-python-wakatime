@@ -66,7 +66,7 @@ def get_new_prompts_class(
 
             :rtype: list[tuple[_TokenType, str]]
             """
-            hook(*args, **kwargs)
+            hook(args, kwargs)
             return prompts_class(shell).out_prompt_tokens()
 
     return Ps
@@ -76,7 +76,7 @@ def install_hook(
     c: Config,
     hook: Callable = wakatime_hook,
     args: tuple = (),
-    kwargs: dict[str, Any] = {},
+    kwargs: dict[str, Any] = {"plugin": "repl-ipython-wakatime"},
 ) -> Config:
     """Install hook.
 

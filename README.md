@@ -85,7 +85,8 @@ install_hook(c)
 - [ ] [mypython](https://github.com/asmeurer/mypython): Won't fix.
   - configure file: non-exist.
 
-`install_hook()` must after customization of prompt string, best at the end of file.
+`install_hook()` must be after customization of prompt string, best at the end
+of file.
 
 ## Similar projects
 
