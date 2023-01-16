@@ -1,8 +1,4 @@
-"""Wakatime
-===========
-
-Refer `create-plugin <https://wakatime.com/help/creating-plugin>`_.
-"""
+"""Refer `create-plugin <https://wakatime.com/help/creating-plugin>`_."""
 import logging
 import os
 from shutil import which

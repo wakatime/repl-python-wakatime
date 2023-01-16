@@ -86,9 +86,10 @@ install_hook(c)
 - [ ] [mypython](https://github.com/asmeurer/mypython): Won't fix.
   - configure file: non-exist.
 
-`install_hook()` must be after customization of prompt string, best at the end
-of file.
+`install_hook()` must be after the customization of the prompt string and best
+at the end of file.
 
 ## Similar projects
 
-- <https://wakatime.com/terminal> lists wakatime plugins for many shells.
+- [wakatime plugins for python and many shells](https://wakatime.com/terminal)
+- [codestats plugins](https://codestats.net/plugins)

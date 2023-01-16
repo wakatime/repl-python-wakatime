@@ -1,3 +1,4 @@
+#!/usr/bin/env -S make -B
 [build-system]
 requires = ["setuptools >= 45", "setuptools_scm[toml] >= 6.2", "setuptools-generate"]
 build-backend = "setuptools.build_meta"
@@ -5,10 +6,10 @@ build-backend = "setuptools.build_meta"
 # https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 [project]
 name = "repl-python-wakatime"
-description = "Python REPL plugin for automatic time tracking and metrics generated from your programming activity."
+description = "Python REPL plugin for automatic time tracking and metrics generated from your programming activity"
 authors = [{ name = "Wu Zhenyu", email = "wuzhenyu@ustc.edu" }]
 readme = "README.md"
-requires-python = ">= 3.9"
+requires-python = ">= 3.7"
 keywords = ["wakatime", "plugin", "python", "ipython", "ptpython"]
 license = { text = "GPL v3" }
 classifiers = [
@@ -41,8 +42,19 @@ Source = "https://github.com/wakatime/repl-python-wakatime"
 [tool.setuptools.package-data]
 repl_python_wakatime = ["py.typed", "assets/*"]
 
-[tool.setuptools.dynamic.optional-dependencies]
-dev = { file = "requirements/dev.txt" }
+# begin: scripts/generate-pyproject.toml.pl
+[tool.setuptools.dynamic.optional-dependencies.dev]
+file = "requirements/dev.txt"
+
+[tool.setuptools.dynamic.optional-dependencies.ipython]
+file = "requirements/ipython.txt"
+
+[tool.setuptools.dynamic.optional-dependencies.ptipython]
+file = "requirements/ptipython.txt"
+
+[tool.setuptools.dynamic.optional-dependencies.ptpython]
+file = "requirements/ptpython.txt"
+# end: scripts/generate-pyproject.toml.pl
 
 [tool.setuptools_scm]
 write_to = "src/repl_python_wakatime/_version.py"
