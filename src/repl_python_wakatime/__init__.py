@@ -52,11 +52,13 @@ def send_wakatime_heartbeat(
     )
 
 
-def wakatime_hook(args: tuple = (), kwargs: dict[str, Any] = {}) -> None:
+def wakatime_hook(*args: Any, **kwargs: Any) -> None:
     """Wakatime hook.
 
     :param args:
-    :type args: tuple
+    :type args: Any
+    :param kwargs:
+    :type kwargs: Any
     :rtype: None
     """
     if which("wakatime-cli") is None:

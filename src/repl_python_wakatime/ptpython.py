@@ -60,7 +60,7 @@ class Ps(PromptStyle):
 
         :rtype: AnyFormattedText
         """
-        self.hook(self.args, self.kwargs)
+        self.hook(*self.args, **self.kwargs)
         return self.prompt_style.out_prompt()
 
 

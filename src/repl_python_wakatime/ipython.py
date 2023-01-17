@@ -66,7 +66,7 @@ def get_new_prompts_class(
 
             :rtype: list[tuple[_TokenType, str]]
             """
-            hook(args, kwargs)
+            hook(*args, **kwargs)
             return prompts_class(shell).out_prompt_tokens()
 
     return Ps

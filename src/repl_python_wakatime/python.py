@@ -45,7 +45,7 @@ class Ps1:
 
         :rtype: str
         """
-        self.hook(self.args, self.kwargs)
+        self.hook(*self.args, **self.kwargs)
         if isinstance(self.ps1, str):
             return self.ps1
         else:

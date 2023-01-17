@@ -89,6 +89,17 @@ install_hook(c)
 `install_hook()` must be after the customization of the prompt string and best
 at the end of file.
 
+## Configure
+
+```python
+from repl_python_wakatime.python import install_hook
+
+install_hook(f, args, kwargs)
+```
+
+will execute `f(*args, **kwargs)` after every output/input. Other REPLs are
+similar.
+
 ## Similar projects
 
 - [wakatime plugins for python and many shells](https://wakatime.com/terminal)
