@@ -1,4 +1,3 @@
-#!/usr/bin/env -S make -B
 [build-system]
 requires = ["setuptools >= 45", "setuptools_scm[toml] >= 6.2", "setuptools-generate"]
 build-backend = "setuptools.build_meta"
