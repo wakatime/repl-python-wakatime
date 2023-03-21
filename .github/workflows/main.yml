@@ -15,6 +15,7 @@ permissions:
   contents: write
 
 env:
+  PYTHONUTF8: "1"
   python-version: 3.x
   cache: pip
 
@@ -39,13 +40,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -e '.[dev]'
-      - name: Test for Linux and macOS
-        if: runner.os != 'Windows'
-        run: |
-          pytest --cov .
-          pre-commit run -a
-      - name: Test for Windows
-        if: runner.os == 'Windows'
+      - name: Test
         run: |
           pytest --cov
       - uses: codecov/codecov-action@v3
@@ -74,13 +69,13 @@ jobs:
         run: |
           python -m build
       - uses: actions/upload-artifact@v3
-        if: runner.os == 'Linux' && ! startsWith(github.ref, 'refs/tags/')
+        if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
         with:
           path: |
             dist/*
             build/resources/*
       - uses: softprops/action-gh-release@v1
-        if: runner.os == 'Linux' && startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             dist/*
