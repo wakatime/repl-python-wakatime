@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 def send_wakatime_heartbeat(
     project: str = "",
+    category: str = "coding",
     plugin: str = "repl-python-wakatime",
     filenames: list[str] = [".git"],
     detect_func: Callable[[str], bool] = os.path.isdir,
@@ -26,6 +27,8 @@ def send_wakatime_heartbeat(
 
     :param project:
     :type project: str
+    :param category:
+    :type category: str
     :param plugin:
     :type plugin: str
     :param filenames:
@@ -42,6 +45,7 @@ def send_wakatime_heartbeat(
         [
             "wakatime-cli",
             "--write",
+            f"--category={category}",
             f"--plugin={plugin}",
             "--entity-type=app",
             "--entity=python",
@@ -61,9 +65,6 @@ def wakatime_hook(*args: Any, **kwargs: Any) -> None:
     :type kwargs: Any
     :rtype: None
     """
-    if which("wakatime-cli") is None:
-        logger.error("Please install wakatime-cli firstly!")
-        return
     task = Thread(target=send_wakatime_heartbeat, args=args, kwargs=kwargs)
     task.daemon = True
     task.start()

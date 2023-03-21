@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 45", "setuptools_scm[toml] >= 6.2", "setuptools-generate"]
+requires = ["setuptools_scm[toml] >= 6.2", "setuptools-generate"]
 build-backend = "setuptools.build_meta"
 
 # https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
