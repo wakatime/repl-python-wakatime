@@ -6,7 +6,11 @@ from subprocess import run  # nosec: B404
 from threading import Thread
 from typing import Any, Callable
 
-from ._version import __version__, __version_tuple__  # type: ignore
+try:
+    from ._version import __version__, __version_tuple__  # type: ignore
+except ImportError:
+    __version__ = "rolling"
+    __version_tuple__ = (0, 0, 0, __version__, "")
 
 logger = logging.getLogger(__name__)
 
