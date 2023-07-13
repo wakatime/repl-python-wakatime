@@ -15,9 +15,11 @@
             format = "pyproject";
             disabled = pythonOlder "3.6";
             propagatedBuildInputs = [
-              setuptools
               ptpython
               ipython
+            ];
+            nativeBuildInputs = [
+              setuptools
             ];
             pythonImportsCheck = [
               "repl_python_wakatime"
