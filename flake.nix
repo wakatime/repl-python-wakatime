@@ -9,8 +9,7 @@
         {
           formatter = nixpkgs-fmt;
           packages.default = buildPythonApplication rec {
-            pname = "repl-python-wakatime";
-            version = "";
+            name = "repl-python-wakatime";
             src = self;
             format = "pyproject";
             disabled = pythonOlder "3.6";
