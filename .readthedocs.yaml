@@ -6,15 +6,9 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3"
-  jobs:
-    pre_build:
-      - pip install .
-
-sphinx:
-  configuration: docs/conf.py
 
 formats:
-  - pdf
+  - htmlzip
 
 python:
   install:
