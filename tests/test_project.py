@@ -1,10 +1,10 @@
-"""Test
-=======
+"""Test Project
+===============
 """
 import os
 from pathlib import Path
 
-from repl_python_wakatime.utils import get_project
+from repl_python_wakatime.utils.project import get_project
 
 
 class Test:

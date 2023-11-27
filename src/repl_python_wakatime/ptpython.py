@@ -7,7 +7,7 @@ from prompt_toolkit.formatted_text import AnyFormattedText
 from ptpython.prompt_style import PromptStyle
 from ptpython.repl import PythonRepl
 
-from . import wakatime_hook
+from .hooks.wakatime import wakatime_hook
 
 
 class Ps(PromptStyle):

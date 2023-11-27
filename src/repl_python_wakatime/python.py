@@ -4,7 +4,7 @@
 import sys
 from typing import Any, Callable
 
-from . import wakatime_hook
+from .hooks.wakatime import wakatime_hook
 
 
 class Ps1:

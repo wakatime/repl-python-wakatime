@@ -94,11 +94,18 @@ at the end of file.
 ```python
 from repl_python_wakatime.python import install_hook
 
-install_hook(f, args, kwargs)
+install_hook(hook_function, args, kwargs)
 ```
 
-will execute `f(*args, **kwargs)` after every output/input. Other REPLs are
-similar.
+will execute `hook_function(*args, **kwargs)` after every output/input. Other
+REPLs are similar. Currently, `hook_function` can be:
+
+- `repl_python_wakatime.hooks.wakatime.wakatime_hook()`: By default.
+- `repl_python_wakatime.hooks.codestats.codestats_hook()`: for [codestats](https://codestats.net/)
+- Create your hooks for other similar projects, such as:
+  - [codetime](https://codetime.dev/)
+  - [rescuetime](https://www.rescuetime.com/)
+  - ...
 
 ## Similar projects
 

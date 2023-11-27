@@ -48,6 +48,9 @@ file = "requirements/dev.txt"
 [tool.setuptools.dynamic.optional-dependencies.ipython]
 file = "requirements/ipython.txt"
 
+[tool.setuptools.dynamic.optional-dependencies.keyring]
+file = "requirements/keyring.txt"
+
 [tool.setuptools.dynamic.optional-dependencies.ptipython]
 file = "requirements/ptipython.txt"
 
@@ -88,5 +91,5 @@ exclude_lines = [
 [tool.bandit.assert_used]
 skips = [
   "*_test.py",
-  "test_*.py",
+  "*/test_*.py",
 ]

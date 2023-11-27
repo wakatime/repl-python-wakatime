@@ -38,7 +38,7 @@ repos:
         args:
           - --msg-filename
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 2.7.2
+    rev: 2.7.3
     hooks:
       - id: editorconfig-checker
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
@@ -50,7 +50,7 @@ repos:
     hooks:
       - id: actionlint
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.32.0
+    rev: v1.33.0
     hooks:
       - id: yamllint
   - repo: https://github.com/executablebooks/mdformat
@@ -71,14 +71,14 @@ repos:
     hooks:
       - id: markdownlint-cli2
         additional_dependencies:
-          - markdown-it-texmath@0.9.1
+          - markdown-it-texmath
   - repo: https://github.com/Freed-Wu/pre-commit-hooks
     rev: 0.0.11
     hooks:
       - id: update-CITATION.cff
       - id: update-pyproject.toml
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 23.11.0
     hooks:
       - id: black
   - repo: https://github.com/PyCQA/isort
@@ -92,7 +92,7 @@ repos:
         additional_dependencies:
           - tomli
   - repo: https://github.com/kumaraditya303/mirrors-pyright
-    rev: v1.1.329
+    rev: v1.1.335
     hooks:
       - id: pyright
   - repo: https://github.com/PyCQA/bandit

@@ -8,7 +8,7 @@ from IPython.terminal.prompts import ClassicPrompts, Prompts
 from pygments.token import _TokenType
 from traitlets.config.loader import Config, LazyConfigValue
 
-from . import wakatime_hook
+from .hooks.wakatime import wakatime_hook
 
 
 def get_new_prompts_class(

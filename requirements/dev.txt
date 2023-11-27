@@ -1,6 +1,6 @@
 #!/usr/bin/env -S pip install -r
 # For unit test and code coverage rate test.
 
-pre-commit
+keyring
 ptpython[ptipython]
 pytest-cov
