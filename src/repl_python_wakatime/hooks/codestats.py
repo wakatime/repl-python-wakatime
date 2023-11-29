@@ -13,9 +13,11 @@ from datetime import datetime
 from http.client import HTTPException
 from socket import gethostname
 from ssl import CertificateError
-from typing import NoReturn
+from typing import Any, NoReturn
 from urllib.error import URLError
 from urllib.request import Request, urlopen
+
+from .. import __version__
 
 logger = logging.getLogger(__name__)
 INTERVAL = 10  # interval at which stats are sent
@@ -31,6 +33,8 @@ def codestats_hook(
     language_type: str = "Terminal (python)",
     service_name: str = "codestats",
     user_name: str = gethostname(),
+    *args: Any,
+    **kwargs: Any,
 ) -> None:
     """Codestats hook.
 

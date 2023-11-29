@@ -15,6 +15,8 @@ def send_wakatime_heartbeat(
     plugin: str = "repl-python-wakatime",
     filenames: list[str] = [".git"],
     detect_func: Callable[[str], bool] = os.path.isdir,
+    *args: Any,
+    **kwargs: Any,
 ) -> None:
     """Send wakatime heartbeat.
 
