@@ -39,6 +39,8 @@
 Python REPL plugin for automatic time tracking and metrics generated from your
 programming activity.
 
+![screenshot](https://github.com/wakatime/repl-python-wakatime/assets/32936898/d0ac2fab-f9c2-4213-99e3-4249279b1213)
+
 Supported REPLs:
 
 - [x] [python](https://github.com/python/cpython):
