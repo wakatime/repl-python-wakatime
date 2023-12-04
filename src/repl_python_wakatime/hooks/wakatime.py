@@ -4,12 +4,11 @@
 Refer `create-plugin <https://wakatime.com/help/creating-plugin>`_.
 """
 import os
-from subprocess import run  # nosec: B404
-from threading import Thread
+from subprocess import Popen  # nosec: B404
 from typing import Any, Callable
 
 
-def send_wakatime_heartbeat(
+def wakatime_hook(
     project: str = "",
     category: str = "coding",
     plugin: str = "repl-python-wakatime",
@@ -41,7 +40,7 @@ def send_wakatime_heartbeat(
         from ..utils.project import get_project
 
         project = get_project(filenames, detect_func)
-    run(  # nosec: B603 B607
+    Popen(  # nosec: B603 B607
         [
             "wakatime-cli",
             "--write",
@@ -51,20 +50,5 @@ def send_wakatime_heartbeat(
             "--entity=python",
             "--alternate-language=python",
             f"--project={project}",
-        ],
-        stdout=open(os.devnull, "w"),
+        ]
     )
-
-
-def wakatime_hook(*args: Any, **kwargs: Any) -> None:
-    """Wakatime hook.
-
-    :param args:
-    :type args: Any
-    :param kwargs:
-    :type kwargs: Any
-    :rtype: None
-    """
-    task = Thread(target=send_wakatime_heartbeat, args=args, kwargs=kwargs)
-    task.daemon = True
-    task.start()
