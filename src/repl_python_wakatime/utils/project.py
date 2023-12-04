@@ -9,7 +9,7 @@ def get_project(
     filenames: list[str] = [".git"],
     detect_func: Callable[[str], bool] = os.path.isdir,
 ) -> str:
-    """Get project.
+    """Get project. Its function is like ``git rev-parse --show-toplevel``.
 
     If ``.git`` is a directory, use current directory. If not, detect its
     parent directory. If its parent directory is itself (which means it is the
