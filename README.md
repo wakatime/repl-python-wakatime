@@ -109,6 +109,14 @@ REPLs are similar. Currently, `hook_function` can be:
   - [rescuetime](https://www.rescuetime.com/)
   - ...
 
+## Related programs
+
+Some programs is written in python or providing a python port.
+We can use this project to statistic their time:
+
+- [gdb](https://sourceware.org/gdb): See
+  [here](https://github.com/Freed-Wu/gdb-prompt)
+
 ## Similar projects
 
 - [wakatime plugins for python and many shells](https://wakatime.com/terminal)
