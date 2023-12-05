@@ -30,7 +30,8 @@ codestats = None
 def codestats_hook(
     api_key: str = "",
     url: str = "https://codestats.net/api/my/pulses",
-    language_type: str = "Terminal (python)",
+    language: str = "python",
+    language_type: str = "Terminal (%s)",
     service_name: str = "codestats",
     user_name: str = gethostname(),
     *args: Any,
@@ -42,12 +43,18 @@ def codestats_hook(
     :type api_key: str
     :param url:
     :type url: str
+    :param language:
+    :type language: str
     :param language_type:
     :type language_type: str
     :param service_name:
     :type service_name: str
     :param user_name:
     :type user_name: str
+    :param args:
+    :type args: Any
+    :param kwargs:
+    :type kwargs: Any
     :rtype: None
     """
     global codestats
@@ -56,7 +63,7 @@ def codestats_hook(
             from ..utils.api import get_api_key
 
             api_key = get_api_key(service_name, user_name)
-        codestats = CodeStats(api_key, url, language_type)
+        codestats = CodeStats(api_key, url, language_type % language)
     codestats.add_xp()
 
 
@@ -67,7 +74,8 @@ class CodeStats:
         self,
         api_key: str,
         url: str = "https://codestats.net/api/my/pulses",
-        language_type: str = "Terminal (python)",
+        language: str = "python",
+        language_type: str = "Terminal (%s)",
     ) -> None:
         """Init.
 
@@ -75,13 +83,15 @@ class CodeStats:
         :type api_key: str
         :param url:
         :type url: str
+        :param language:
+        :type language: str
         :param language_type:
         :type language_type: str
         :rtype: None
         """
         self.url = url
         self.api_key = api_key
-        self.language_type = language_type
+        self.language_type = language_type % language
         self.xp_dict = {language_type: 0}
 
         self.sem = threading.Semaphore()

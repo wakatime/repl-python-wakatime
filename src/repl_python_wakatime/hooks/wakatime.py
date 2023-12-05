@@ -10,6 +10,7 @@ from typing import Any, Callable
 
 def wakatime_hook(
     project: str = "",
+    language: str = "python",
     category: str = "coding",
     plugin: str = "repl-python-wakatime",
     filenames: list[str] = [".git"],
@@ -47,8 +48,8 @@ def wakatime_hook(
             f"--category={category}",
             f"--plugin={plugin}",
             "--entity-type=app",
-            "--entity=python",
-            "--alternate-language=python",
+            f"--entity={language}",
+            f"--alternate-language={language}",
             f"--project={project}",
         ]
     )
