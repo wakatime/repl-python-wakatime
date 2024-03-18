@@ -2,6 +2,7 @@
 
 https://www.sphinx-doc.org/en/master/usage/configuration.html
 """
+
 from repl_python_wakatime import __version__ as version  # type: ignore
 from repl_python_wakatime._metainfo import (  # type: ignore
     author,

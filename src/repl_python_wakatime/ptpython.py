@@ -1,6 +1,7 @@
 """ptpython
 ===========
 """
+
 from typing import Any, Callable
 
 from prompt_toolkit.formatted_text import AnyFormattedText
