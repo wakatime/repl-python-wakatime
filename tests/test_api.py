@@ -1,6 +1,7 @@
 r"""Test API
 ============
 """
+
 import pytest
 
 from repl_python_wakatime.hooks.codestats import CodeStats

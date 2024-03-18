@@ -1,6 +1,7 @@
 """API
 ======
 """
+
 import logging
 
 import keyring

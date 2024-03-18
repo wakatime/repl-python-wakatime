@@ -1,6 +1,7 @@
 """ipython
 ==========
 """
+
 from typing import Any, Callable
 
 from IPython.terminal.interactiveshell import TerminalInteractiveShell

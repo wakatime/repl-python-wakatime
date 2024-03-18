@@ -5,6 +5,7 @@ Refer `code-stats-vim
 <https://gitlab.com/code-stats/code-stats-vim/-/blob/master/pythonx/codestats.py>
 `_.
 """
+
 import json
 import logging
 import threading

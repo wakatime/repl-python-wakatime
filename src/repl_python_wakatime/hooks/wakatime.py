@@ -3,6 +3,7 @@
 
 Refer `create-plugin <https://wakatime.com/help/creating-plugin>`_.
 """
+
 import os
 from subprocess import Popen  # nosec: B404
 from typing import Any, Callable
