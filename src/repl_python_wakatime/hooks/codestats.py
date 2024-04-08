@@ -75,8 +75,7 @@ class CodeStats:
         self,
         api_key: str,
         url: str = "https://codestats.net/api/my/pulses",
-        language: str = "python",
-        language_type: str = "Terminal (%s)",
+        language_type: str = "Terminal (python)",
     ) -> None:
         """Init.
 
@@ -92,7 +91,7 @@ class CodeStats:
         """
         self.url = url
         self.api_key = api_key
-        self.language_type = language_type % language
+        self.language_type = language_type
         self.xp_dict = {language_type: 0}
 
         self.sem = threading.Semaphore()
@@ -138,9 +137,10 @@ class CodeStats:
 
         # after lock is released we can send the payload
         utc_now = datetime.now().astimezone().isoformat()
-        pulse_json = json.dumps(
-            {"coded_at": "{0}".format(utc_now), "xps": xp_list}
-        ).encode("utf-8")
+        pulse_json = json.dumps({
+            "coded_at": "{0}".format(utc_now),
+            "xps": xp_list,
+        }).encode("utf-8")
         req = Request(url=self.url, data=pulse_json, headers=headers)
         error = ""
         try:
@@ -162,7 +162,8 @@ class CodeStats:
             error = e
         except HTTPException as e:
             error = "HTTPException on send data. Msg: {0}\nDoc?:{1}".format(
-                e.message, e.__doc__  # type: ignore
+                e.message,
+                e.__doc__,  # type: ignore
             )
         if error:
             logger.error(error)
