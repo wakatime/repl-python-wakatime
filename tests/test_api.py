@@ -3,7 +3,6 @@ r"""Test API
 """
 
 import pytest
-
 from repl_python_wakatime.hooks.codestats import CodeStats
 from repl_python_wakatime.utils.api import get_api_key
 

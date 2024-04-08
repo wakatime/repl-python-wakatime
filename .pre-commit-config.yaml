@@ -1,4 +1,6 @@
 ---
+exclude: ^templates/
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -11,7 +13,6 @@ repos:
       - id: trailing-whitespace
       - id: mixed-line-ending
       - id: end-of-file-fixer
-        exclude: ^templates/class\.txt$
       - id: detect-private-key
       - id: check-symlinks
       - id: check-ast
@@ -64,8 +65,9 @@ repos:
           - mdformat-toc
           - mdformat-deflist
           - mdformat-beautysh
-          - mdformat-black
+          - mdformat-ruff
           - mdformat-config
+          - mdformat-web
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.12.1
     hooks:
@@ -77,32 +79,15 @@ repos:
     hooks:
       - id: update-CITATION.cff
       - id: update-pyproject.toml
-  - repo: https://github.com/psf/black
-    rev: 24.3.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.2.1
     hooks:
-      - id: black
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-  - repo: https://github.com/pycqa/pydocstyle
-    rev: 6.3.0
-    hooks:
-      - id: pydocstyle
-        additional_dependencies:
-          - tomli
+      - id: ruff
+      - id: ruff-format
   - repo: https://github.com/kumaraditya303/mirrors-pyright
-    rev: v1.1.354
+    rev: v1.1.350
     hooks:
       - id: pyright
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.8
-    hooks:
-      - id: bandit
-        args:
-          - -cpyproject.toml
-        additional_dependencies:
-          - tomli
   - repo: https://github.com/nix-community/nixpkgs-fmt
     rev: v1.3.0
     hooks:

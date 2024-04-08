@@ -2,7 +2,8 @@
 ===========
 """
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from prompt_toolkit.formatted_text import AnyFormattedText
 from ptpython.prompt_style import PromptStyle
@@ -19,7 +20,7 @@ class Ps(PromptStyle):
         prompt_style: PromptStyle,
         hook: Callable = wakatime_hook,
         args: tuple = (),
-        kwargs: dict[str, Any] = {},
+        kwargs: dict[str, Any] | None = None,
     ) -> None:
         """Init.
 
@@ -30,9 +31,11 @@ class Ps(PromptStyle):
         :param args:
         :type args: tuple
         :param kwargs:
-        :type kwargs: dict[str, Any]
+        :type kwargs: dict[str, Any] | None
         :rtype: None
         """
+        if kwargs is None:
+            kwargs = {}
         super().__init__()
         self.prompt_style = prompt_style
         self.hook = hook
@@ -69,7 +72,7 @@ def install_hook(
     repl: PythonRepl,
     hook: Callable = wakatime_hook,
     args: tuple = (),
-    kwargs: dict[str, Any] = {"plugin": "repl-ptpython-wakatime"},
+    kwargs: dict[str, Any] | None = None,
     hook_prefix: str = "ps1_",
 ) -> PythonRepl:
     """Install hook.
@@ -81,11 +84,13 @@ def install_hook(
     :param args:
     :type args: tuple
     :param kwargs:
-    :type kwargs: dict[str, Any]
+    :type kwargs: dict[str, Any] | None
     :param hook_prefix:
     :type hook_prefix: str
     :rtype: PythonRepl
     """
+    if kwargs is None:
+        kwargs = {"plugin": "repl-ptpython-wakatime"}
     ps = Ps(repl.all_prompt_styles[repl.prompt_style], hook, args, kwargs)
     length = len(hook_prefix)
     names = map(

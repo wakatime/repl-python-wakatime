@@ -5,8 +5,9 @@ Refer `create-plugin <https://wakatime.com/help/creating-plugin>`_.
 """
 
 import os
+from collections.abc import Callable
 from subprocess import Popen  # nosec: B404
-from typing import Any, Callable
+from typing import Any
 
 
 def wakatime_hook(
@@ -14,7 +15,7 @@ def wakatime_hook(
     language: str = "python",
     category: str = "coding",
     plugin: str = "repl-python-wakatime",
-    filenames: list[str] = [".git"],
+    filenames: list[str] | None = None,
     detect_func: Callable[[str], bool] = os.path.isdir,
     *args: Any,
     **kwargs: Any,
@@ -33,11 +34,13 @@ def wakatime_hook(
     :param plugin:
     :type plugin: str
     :param filenames:
-    :type filenames: list[str]
+    :type filenames: list[str] | None
     :param detect_func:
     :type detect_func: Callable[[str], bool]
     :rtype: None
     """
+    if filenames is None:
+        filenames = [".git"]
     if project == "":
         from ..utils.project import get_project
 

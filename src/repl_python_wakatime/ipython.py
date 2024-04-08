@@ -2,7 +2,8 @@
 ==========
 """
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from IPython.terminal.interactiveshell import TerminalInteractiveShell
 from IPython.terminal.prompts import ClassicPrompts, Prompts
@@ -16,7 +17,7 @@ def get_new_prompts_class(
     prompts_class: type,
     hook: Callable = wakatime_hook,
     args: tuple = (),
-    kwargs: dict[str, Any] = {},
+    kwargs: dict[str, Any] | None = None,
 ) -> type:
     """Get new prompts class.
 
@@ -27,9 +28,11 @@ def get_new_prompts_class(
     :param args:
     :type args: tuple
     :param kwargs:
-    :type kwargs: dict[str, Any]
+    :type kwargs: dict[str, Any] | None
     :rtype: type
     """
+    if kwargs is None:
+        kwargs = {}
     if isinstance(prompts_class, LazyConfigValue):
         prompts_class = ClassicPrompts
     shell = TerminalInteractiveShell()
@@ -77,7 +80,7 @@ def install_hook(
     c: Config,
     hook: Callable = wakatime_hook,
     args: tuple = (),
-    kwargs: dict[str, Any] = {"plugin": "repl-ipython-wakatime"},
+    kwargs: dict[str, Any] | None = None,
 ) -> Config:
     """Install hook.
 
@@ -88,10 +91,15 @@ def install_hook(
     :param args:
     :type args: tuple
     :param kwargs:
-    :type kwargs: dict[str, Any]
+    :type kwargs: dict[str, Any] | None
     :rtype: Config
     """
+    if kwargs is None:
+        kwargs = {"plugin": "repl-ipython-wakatime"}
     c.TerminalInteractiveShell.prompts_class = get_new_prompts_class(  # type: ignore
-        c.TerminalInteractiveShell.prompts_class, hook, args, kwargs  # type: ignore
+        c.TerminalInteractiveShell.prompts_class,
+        hook,
+        args,
+        kwargs,  # type: ignore
     )
     return c

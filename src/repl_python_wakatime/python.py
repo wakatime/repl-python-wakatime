@@ -3,7 +3,8 @@
 """
 
 import sys
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from .hooks.wakatime import wakatime_hook
 
@@ -16,7 +17,7 @@ class Ps1:
         ps1: object = None,
         hook: Callable = wakatime_hook,
         args: tuple = (),
-        kwargs: dict[str, Any] = {},
+        kwargs: dict[str, Any] | None = None,
     ) -> None:
         """Init.
 
@@ -27,9 +28,11 @@ class Ps1:
         :param args:
         :type args: tuple
         :param kwargs:
-        :type kwargs: dict[str, Any]
+        :type kwargs: dict[str, Any] | None
         :rtype: None
         """
+        if kwargs is None:
+            kwargs = {}
         if ps1:
             self.ps1 = ps1
         else:
@@ -56,7 +59,7 @@ class Ps1:
 def install_hook(
     hook: Callable = wakatime_hook,
     args: tuple = (),
-    kwargs: dict[str, Any] = {"plugin": "repl-python-wakatime"},
+    kwargs: dict[str, Any] | None = None,
 ) -> object:
     """Install hook.
 
@@ -65,8 +68,10 @@ def install_hook(
     :param args:
     :type args: tuple
     :param kwargs:
-    :type kwargs: dict[str, Any]
+    :type kwargs: dict[str, Any] | None
     :rtype: object
     """
+    if kwargs is None:
+        kwargs = {"plugin": "repl-python-wakatime"}
     sys.ps1 = Ps1(hook=hook, args=args, kwargs=kwargs)
     return sys.ps1
