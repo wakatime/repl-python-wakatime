@@ -137,10 +137,12 @@ class CodeStats:
 
         # after lock is released we can send the payload
         utc_now = datetime.now().astimezone().isoformat()
-        pulse_json = json.dumps({
-            "coded_at": f"{utc_now}",
-            "xps": xp_list,
-        }).encode("utf-8")
+        pulse_json = json.dumps(
+            {
+                "coded_at": f"{utc_now}",
+                "xps": xp_list,
+            }
+        ).encode("utf-8")
         req = Request(url=self.url, data=pulse_json, headers=headers)
         error = ""
         try:
