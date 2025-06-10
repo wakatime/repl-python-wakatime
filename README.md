@@ -39,7 +39,7 @@
 Python REPL plugin for automatic time tracking and metrics generated from your
 programming activity.
 
-![screenshot](https://github.com/wakatime/repl-python-wakatime/assets/32936898/d0ac2fab-f9c2-4213-99e3-4249279b1213)
+![screenshot](https://github.com/user-attachments/assets/b745d591-60ac-462e-9485-1828914706a1)
 
 Supported REPLs:
 
@@ -81,6 +81,23 @@ from repl_python_wakatime.iptpython import install_hook
 install_hook(c)
 ```
 
+- [x] [gdb](https://sourceware.org/gdb/):
+
+Your `gdb` must be compiled with
+[python port](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Python.html).
+
+`~/.config/gdb/gdbinit`:
+
+```gdb
+source /the/path/of/repl_python_wakatime/gdb.py
+```
+
+See [GDB Hooks](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Hooks.html)
+to know more.
+
+Use environment variables `HOOK_NAMES=hook1:hook2` to defines which
+[hook](#configure) will be used.
+
 - [x] [ptipython](https://github.com/prompt-toolkit/ptpython): Same as
   [ipython](https://github.com/ipython/ipython).
 - [ ] [bpython](https://github.com/bpython/bpython)
@@ -108,14 +125,6 @@ REPLs are similar. Currently, `hook_function` can be:
   - [codetime](https://codetime.dev/)
   - [rescuetime](https://www.rescuetime.com/)
   - ...
-
-## Related programs
-
-Some programs is written in python or providing a python port.
-We can use this project to statistic their time:
-
-- [gdb](https://sourceware.org/gdb): See
-  [here](https://github.com/Freed-Wu/gdb-prompt)
 
 ## Similar projects
 
