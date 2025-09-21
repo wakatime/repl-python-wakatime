@@ -126,7 +126,7 @@ from repl_python_wakatime.backends.codestats import CodeStats
 from repl_python_wakatime.backends.wakatime import Wakatime
 from repl_python_wakatime.frontends.python import Python
 
-Python(Wakatime() | CodeStats()).install()
+sys.ps1 = Python(Wakatime() | CodeStats())
 ```
 
 ## APIs
