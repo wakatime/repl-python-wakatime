@@ -52,8 +52,9 @@ class Hook:
         project = cwd
         for parent in project.parents:
             for filename in filenames:
-                if (parent / filename).exists():
-                    return project.name
+                path = parent / filename
+                if path.exists():
+                    return parent.name
         return cwd.name
 
     def __or__(self, hook: Self) -> "Hook":

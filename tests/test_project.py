@@ -5,7 +5,9 @@
 import os
 from pathlib import Path
 
-from repl_python_wakatime.utils.project import get_project
+from repl_python_wakatime.backends import Hook
+
+hook = Hook()
 
 
 class Test:
@@ -22,7 +24,7 @@ class Test:
         os.makedirs(".svn")
         os.makedirs("subdir")
         os.chdir("subdir")
-        rst = get_project([".git", ".svn"])
+        rst = hook.get_project((".git/", ".svn/"))
         expected = os.path.basename(tmp_path)
         assert rst == expected
 
@@ -36,6 +38,6 @@ class Test:
         os.chdir(tmp_path)
         os.makedirs("subdir")
         os.chdir("subdir")
-        rst = get_project([".git", ".svn"])
+        rst = hook.get_project((".git/", ".svn/"))
         expected = "subdir"
         assert rst == expected
