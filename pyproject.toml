@@ -8,7 +8,8 @@ name = "repl-python-wakatime"
 description = "Python REPL plugin for automatic time tracking and metrics generated from your programming activity"
 authors = [{ name = "Wu Zhenyu", email = "wuzhenyu@ustc.edu" }]
 readme = "README.md"
-requires-python = ">= 3.7"
+# Self
+requires-python = ">= 3.11"
 keywords = ["wakatime", "plugin", "python", "ipython", "ptpython"]
 license = { text = "GPL v3" }
 classifiers = [
