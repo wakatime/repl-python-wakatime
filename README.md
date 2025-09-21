@@ -76,12 +76,12 @@ def configure(repl: PythonRepl) -> None:
 `~/.ipython/profile_default/ipython_config.py`:
 
 ```python
-from IPython.terminal.prompts import ClassicPrompts
 from repl_python_wakatime.backends.wakatime import Wakatime
 from repl_python_wakatime.frontends.ipython import Ipython
 
 c.TerminalInteractiveShell.prompts_class = lambda *args, **kwargs: Ipython(
-    Wakatime(), ClassicPrompts(*args, **kwargs)
+    Wakatime(),
+    c.TerminalInteractiveShell.prompts_class(*args, **kwargs),
 )
 ```
 
