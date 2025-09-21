@@ -39,49 +39,53 @@
 Python REPL plugin for automatic time tracking and metrics generated from your
 programming activity.
 
-![screenshot](https://github.com/user-attachments/assets/b745d591-60ac-462e-9485-1828914706a1)
+![screen](https://github.com/user-attachments/assets/4e337cae-06a7-4164-be83-c7b73e8a0f63)
 
-Supported REPLs:
+## REPLs
 
-- [x] [python](https://github.com/python/cpython):
-  - executes
-    [`str(sys.ps1)`](https://docs.python.org/3/library/sys.html#sys.ps1) after
-    every input.
-  - configure file:
-    [`$PYTHON_STARTUP`](https://docs.python.org/3/using/cmdline.html#envvar-PYTHONSTARTUP).
+### [python](https://github.com/python/cpython)
+
+[`$PYTHON_STARTUP`](https://docs.python.org/3/using/cmdline.html#envvar-PYTHONSTARTUP):
 
 ```python
-from repl_python_wakatime.python import install_hook
+import sys
 
-install_hook()
+from repl_python_wakatime.backends.wakatime import Wakatime
+from repl_python_wakatime.frontends.python import Python
+
+sys.ps1 = Python(Wakatime())
 ```
 
-- [x] [ptpython](https://github.com/prompt-toolkit/ptpython):
-  - executes `get_ptpython().get_output_prompt()` after every output.
-  - configure file: `.../ptpython/config.py`. `...` depends on OS.
+### [ptpython](https://github.com/prompt-toolkit/ptpython)
+
+`${XDG_CONFIG_HOME:-$HOME/.config}/ptpython/config.py`:
 
 ```python
-from ptpython.repl import PythonRepl
-from repl_python_wakatime.ptpython import install_hook
+from repl_python_wakatime.backends.wakatime import Wakatime
+from repl_python_wakatime.frontends.ptpython import Ptpython
 
 
 def configure(repl: PythonRepl) -> None:
-    install_hook(repl)
+    repl.all_prompt_styles[repl.prompt_style] = Ptpython(
+        Wakatime(), repl.all_prompt_styles[repl.prompt_style]
+    )
 ```
 
-- [x] [ipython](https://github.com/ipython/ipython):
-  - executes
-    `c.TerminalInteractiveShell.prompts_class(shell).out_prompt_tokens()` after
-    every output.
-  - configure file: `~/.ipython/profile_default/ipython_config.py`.
+### [ipython](https://github.com/ipython/ipython)/[ptipython](https://github.com/prompt-toolkit/ptpython)
+
+`~/.ipython/profile_default/ipython_config.py`:
 
 ```python
-from repl_python_wakatime.iptpython import install_hook
+from IPython.terminal.prompts import ClassicPrompts
+from repl_python_wakatime.backends.wakatime import Wakatime
+from repl_python_wakatime.frontends.ipython import Ipython
 
-install_hook(c)
+c.TerminalInteractiveShell.prompts_class = lambda *args, **kwargs: Ipython(
+    Wakatime(), ClassicPrompts(*args, **kwargs)
+)
 ```
 
-- [x] [gdb](https://sourceware.org/gdb/):
+### [gdb](https://sourceware.org/gdb/)
 
 Your `gdb` must be compiled with
 [python port](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Python.html).
@@ -89,42 +93,54 @@ Your `gdb` must be compiled with
 `~/.config/gdb/gdbinit`:
 
 ```gdb
-source /the/path/of/repl_python_wakatime/gdb.py
+source ~/.config/gdb/gdbinit.py
 ```
 
-See [GDB Hooks](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Hooks.html)
-to know more.
-
-Use environment variables `HOOK_NAMES=hook1:hook2` to defines which
-[hook](#configure) will be used.
-
-- [x] [ptipython](https://github.com/prompt-toolkit/ptpython): Same as
-  [ipython](https://github.com/ipython/ipython).
-- [ ] [bpython](https://github.com/bpython/bpython)
-- [ ] [xonsh](https://github.com/xonsh/xonsh)
-- [ ] [mypython](https://github.com/asmeurer/mypython): Won't fix.
-  - configure file: non-exist.
-
-`install_hook()` must be after the customization of the prompt string and best
-at the end of file.
-
-## Configure
+`~/.config/gdb/gdbinit.py`:
 
 ```python
-from repl_python_wakatime.python import install_hook
+from repl_python_wakatime.backends.wakatime import Wakatime
+from repl_python_wakatime.frontends.gdb import StopHook
 
-install_hook(hook_function, args, kwargs)
+StopHook(Wakatime())
 ```
 
-will execute `hook_function(*args, **kwargs)` after every output/input. Other
-REPLs are similar. Currently, `hook_function` can be:
+- [ ] [bpython](https://github.com/bpython/bpython)
+- [ ] [xonsh](https://github.com/xonsh/xonsh)
+- [ ] [mypython](https://github.com/asmeurer/mypython): won't fix due to no any
+  configuration.
+- [ ] vim/neovim with python support: see
+  [vim-wakatime](https://github.com/wakatime/vim-wakatime)
 
-- `repl_python_wakatime.hooks.wakatime.wakatime_hook()`: By default.
-- `repl_python_wakatime.hooks.codestats.codestats_hook()`: for [codestats](https://codestats.net/)
-- Create your hooks for other similar projects, such as:
-  - [codetime](https://codetime.dev/)
-  - [rescuetime](https://www.rescuetime.com/)
-  - ...
+## Hooks
+
+- [x] [wakatime](https://wakatime.com/)
+- [x] [codestats](https://codestats.net/)
+- [ ] [codetime](https://codetime.dev/)
+- [ ] [rescuetime](https://www.rescuetime.com/)
+
+You can use many hooks at the same time:
+
+```python
+from repl_python_wakatime.backends.codestats import CodeStats
+from repl_python_wakatime.backends.wakatime import Wakatime
+from repl_python_wakatime.frontends.python import Python
+
+Python(Wakatime() | CodeStats()).install()
+```
+
+## APIs
+
+You can use this project to statistic the time of using any programs. Such as,
+[translate-shell](https://github.com/Freed-Wu/translate-shell/) is a translating
+program:
+
+```python
+from repl_python_wakatime.backends.wakatime import Wakatime
+
+# after each translating
+Wakatime(language="translate-shell", category="translating")()
+```
 
 ## Similar projects
 
