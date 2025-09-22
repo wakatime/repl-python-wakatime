@@ -47,9 +47,7 @@ class CodeStats(Hook):
         self.headers = {
             "Content-Type": "application/json",
             "User-Agent": f"{self.plugin}/{__version__}",
-            "X-API-Token": keyring.get_password(
-                self.service_name, self.user_name
-            ),
+            "X-API-Token": keyring.get_password(self.service_name, self.user_name),
             "Accept": "*/*",
         }
         if not self.headers["X-API-Token"]:
@@ -83,17 +81,17 @@ class CodeStats(Hook):
         if len(self.xp_dict) == 0:
             return
 
-        xp_list = [
-            {"language": ft, "xp": xp} for ft, xp in self.xp_dict.items()
-        ]
+        xp_list = [{"language": ft, "xp": xp} for ft, xp in self.xp_dict.items()]
         self.xp_dict = {self.language_type: 0}
 
         # after lock is released we can send the payload
         utc_now = datetime.now().astimezone().isoformat()
-        data = json.dumps({
-            "coded_at": f"{utc_now}",
-            "xps": xp_list,
-        }).encode("utf-8")
+        data = json.dumps(
+            {
+                "coded_at": f"{utc_now}",
+                "xps": xp_list,
+            }
+        ).encode("utf-8")
         req = Request(url=self.url, data=data, headers=self.headers)
         error = ""
         try:
