@@ -8,14 +8,12 @@ Refer `code-stats-vim
 
 import json
 import logging
-import threading
 from dataclasses import dataclass
 from datetime import datetime
 from http.client import HTTPException
 from socket import gethostname
 from ssl import CertificateError
-from time import sleep
-from typing import NoReturn
+from time import time
 from urllib.error import URLError
 from urllib.request import Request, urlopen
 
@@ -36,7 +34,6 @@ class CodeStats(Hook):
     user_name: str = gethostname()
     url: str = "https://codestats.net/api/my/pulses"
     interval: int = 10  # interval at which stats are sent
-    sleep_interval: float = 0.1  # sleep interval for timeslicing
     timeout: int = 2  # request timeout value (in seconds)
 
     def __post_init__(
@@ -59,9 +56,7 @@ class CodeStats(Hook):
             raise NoKeyringError
 
         self.xp_dict = {self.language_type: 0}
-        self.sem = threading.Semaphore()
-        self.thread = threading.Thread(target=self.run, daemon=True)
-        self.thread.start()
+        self.time = time()
 
     def __call__(self, xp: int = 1) -> None:
         """Add xp.
@@ -72,26 +67,26 @@ class CodeStats(Hook):
         :type xp: int
         :rtype: None
         """
-        self.sem.acquire()
         self.xp_dict[self.language_type] += xp
-        self.sem.release()
+        if time() - self.time > self.interval:
+            self.send_xp()
+            self.time = time()
+
+    def __del__(self) -> None:
+        self.send_xp()
 
     def send_xp(self) -> None:
         """Send xp.
-
-        Acquire the lock to get the list of xp to send.
 
         :rtype: None
         """
         if len(self.xp_dict) == 0:
             return
 
-        self.sem.acquire()
         xp_list = [
             {"language": ft, "xp": xp} for ft, xp in self.xp_dict.items()
         ]
         self.xp_dict = {self.language_type: 0}
-        self.sem.release()
 
         # after lock is released we can send the payload
         utc_now = datetime.now().astimezone().isoformat()
@@ -122,19 +117,3 @@ class CodeStats(Hook):
             error = e
         if error:
             logger.error(error)
-
-    def run(self) -> NoReturn:
-        """Run main thread.
-
-        Needs to be able to send XP at an interval.
-
-        :param self:
-        :rtype: NoReturn
-        """
-        while True:
-            cur_time = 0
-            while cur_time < self.interval:
-                sleep(self.sleep_interval)
-                cur_time += self.sleep_interval
-
-            self.send_xp()
