@@ -110,7 +110,8 @@ StopHook(Wakatime())
 - [ ] [mypython](https://github.com/asmeurer/mypython): won't fix due to no any
   configuration.
 - [ ] vim/neovim with python support: see
-  [vim-wakatime](https://github.com/wakatime/vim-wakatime)
+  [vim-wakatime](https://github.com/wakatime/vim-wakatime) and
+  [code-stats.nvim](https://github.com/Freed-Wu/code-stats.nvim)
 
 ## Hooks
 
