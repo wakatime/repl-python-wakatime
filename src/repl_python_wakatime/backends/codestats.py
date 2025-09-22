@@ -115,11 +115,11 @@ class CodeStats(Hook):
             except AttributeError:
                 # non-HTTP error, eg. no network
                 error = e.reason
-        except CertificateError as e:
-            # SSL certificate error (eg. a public wifi redirects traffic)
-            error = e
         except HTTPException as e:
             error = f"HTTPException on send data. \nDoc: {e.__doc__}"
+        except (CertificateError, TimeoutError) as e:
+            # SSL certificate error (eg. a public wifi redirects traffic)
+            error = e
         if error:
             logger.error(error)
 
