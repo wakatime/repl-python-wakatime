@@ -36,9 +36,7 @@ class CodeStats(Hook):
     interval: int = 60  # interval at which stats are sent
     timeout: ClientTimeout | None = None
 
-    def __post_init__(
-        self,
-    ) -> None:
+    def __post_init__(self) -> None:
         """Init.
 
         :rtype: None
@@ -63,10 +61,10 @@ class CodeStats(Hook):
             self.timeout = ClientTimeout(10)
         self.session = None
         self.loop = asyncio.new_event_loop()
-        self.thread = Thread(target=self.worker, daemon=True)
-        self.thread.start()
         self.event = Event()
         self.lock = Lock()
+        self.thread = Thread(target=self.worker, daemon=True)
+        self.thread.start()
 
     def __call__(self, xp: int = 1) -> None:
         """Add xp.
