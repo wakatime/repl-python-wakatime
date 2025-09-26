@@ -31,7 +31,14 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dynamic = ["version", "optional-dependencies"]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = ["pytest-cov"]
+codestats = ["aiohttp", "keyring"]
+ipython = ["ipython"]
+ptpython = ["ptpython"]
+ptipython = ["ptpython[ptipython]"]
 
 [project.urls]
 Homepage = "https://repl-python-wakatime.readthedocs.io"
@@ -41,13 +48,6 @@ Source = "https://github.com/wakatime/repl-python-wakatime"
 
 [tool.setuptools.package-data]
 repl_python_wakatime = ["py.typed", "assets/*"]
-
-[tool.setuptools.dynamic.optional-dependencies]
-dev = ["pytest-cov"]
-codestats = ["aiohttp", "keyring"]
-ipython = ["ipython"]
-ptpython = ["ptpython"]
-ptipython = ["ptpython[ptipython]"]
 
 [tool.setuptools_scm]
 write_to = "src/repl_python_wakatime/_version.py"
