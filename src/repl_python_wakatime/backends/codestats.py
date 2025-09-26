@@ -30,7 +30,7 @@ class CodeStats(Hook):
 
     service_name: str = "codestats"
     user_name: str = gethostname()
-    url: str = "https://codestats.net/api/my/pulses"
+    url: str = "https://codestats.net/api/my/pulses/"
     interval: int = 60  # interval at which stats are sent
     timeout: ClientTimeout | None = None
 
