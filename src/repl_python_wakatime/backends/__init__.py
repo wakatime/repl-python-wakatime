@@ -60,7 +60,7 @@ class Hook:
     def __or__(self, hook: Self) -> "Hook":
         return Hook(hooks=(self, hook))
 
-    async def __call__(self) -> None:
+    def __call__(self) -> None:
         r"""Run hook"""
         for hook in self.hooks:
-            await hook()
+            hook()

@@ -29,7 +29,7 @@ class Wakatime(Hook):
             f"--{k}={v}" for k, v in args.items()
         ]
 
-    async def __call__(self) -> None:
+    def __call__(self) -> None:
         """Send wakatime heartbeat."""
         self.data["project"] = self.get_project(self.filenames)
         Popen(self.get_wakatime_args(self.data))

@@ -6,11 +6,13 @@ Refer `code-stats-vim
 `_.
 """
 
+import asyncio
 import json
 import logging
 from dataclasses import dataclass
 from datetime import datetime
 from socket import gethostname
+from threading import Thread
 from time import time
 
 from aiohttp import ClientSession
@@ -58,10 +60,10 @@ class CodeStats(Hook):
         }
         self.datetime = datetime.now().astimezone()
         if self.timeout is None:
-            self.timeout = ClientTimeout(1)
+            self.timeout = ClientTimeout(10)
         self.session = None
 
-    async def __call__(self, xp: int = 1) -> None:
+    def __call__(self, xp: int = 1) -> None:
         """Add xp.
 
         Sem sections are super small so this should be quick if it blocks.
@@ -71,20 +73,18 @@ class CodeStats(Hook):
         :rtype: None
         """
         self.data["xps"][0]["xp"] += xp
-        if time() - self.datetime.timestamp() > self.interval:
-            await self.send_xp()
-
-    async def __del__(self) -> None:
-        await self.send_xp()
+        if (
+            time() - self.datetime.timestamp() > self.interval
+            and self.data["xps"][0]["xp"] > 0
+        ):
+            co = self.send_xp()
+            Thread(target=asyncio.run, args=(co,)).run()
 
     async def send_xp(self) -> str:
         """Send xp.
 
         :rtype: str
         """
-        if self.data["xps"][0]["xp"] == 0:
-            return ""
-
         self.datetime = datetime.now().astimezone()
         self.data["coded_at"] = self.datetime.isoformat()
         data = json.dumps(self.data).encode("utf-8")

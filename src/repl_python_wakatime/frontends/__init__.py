@@ -2,7 +2,6 @@ r"""Frontends
 =============
 """
 
-import asyncio
 from dataclasses import dataclass
 
 from ..backends import Hook
@@ -16,4 +15,4 @@ class Repl:
         self.hook.frontend = self.__class__.__name__.lower()
 
     def __call__(self):
-        asyncio.run(self.hook())
+        self.hook()
