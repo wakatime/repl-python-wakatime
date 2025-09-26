@@ -12,7 +12,7 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from socket import gethostname
-from threading import Thread
+from threading import Event, Lock, Thread
 from time import time
 
 from aiohttp import ClientSession
@@ -62,6 +62,11 @@ class CodeStats(Hook):
         if self.timeout is None:
             self.timeout = ClientTimeout(10)
         self.session = None
+        self.loop = asyncio.new_event_loop()
+        self.thread = Thread(target=self.worker, daemon=True)
+        self.thread.start()
+        self.event = Event()
+        self.lock = Lock()
 
     def __call__(self, xp: int = 1) -> None:
         """Add xp.
@@ -72,36 +77,53 @@ class CodeStats(Hook):
         :type xp: int
         :rtype: None
         """
-        self.data["xps"][0]["xp"] += xp
-        if (
-            time() - self.datetime.timestamp() > self.interval
-            and self.data["xps"][0]["xp"] > 0
-        ):
-            co = self.send_xp()
-            Thread(target=asyncio.run, args=(co,)).run()
+        with self.lock:
+            self.data["xps"][0]["xp"] += xp
+        if time() - self.datetime.timestamp() > self.interval:
+            self.event.set()
+
+    def worker(self) -> None:
+        """Worker.
+
+        :param self:
+        :rtype: None
+        """
+        asyncio.set_event_loop(self.loop)
+        while True:
+            self.event.wait()
+            self.loop.run_until_complete(self.send_xp())
+            self.event.clear()
+
+    def __del__(self) -> None:
+        if self.session:
+            self.loop.run_until_complete(self.session.close())
+        self.loop.close()
 
     async def send_xp(self) -> str:
         """Send xp.
 
         :rtype: str
         """
-        self.datetime = datetime.now().astimezone()
-        self.data["coded_at"] = self.datetime.isoformat()
-        data = json.dumps(self.data).encode("utf-8")
-        text = ""
         if self.session is None:
             self.session = ClientSession(
                 base_url=self.url,
                 headers=self.headers,
                 timeout=self.timeout,
             )
+        self.datetime = datetime.now().astimezone()
+        self.data["coded_at"] = self.datetime.isoformat()
+        text = ""
+        with self.lock:
+            data = json.dumps(self.data).encode("utf-8")
+            xp = self.data["xps"][0]["xp"]
         try:
             async with self.session.post(
                 "/",
                 data=data,
             ) as resp:
                 text = await resp.text()
-            self.data["xps"][0]["xp"] = 0
+            with self.lock:
+                self.data["xps"][0]["xp"] -= xp
         except TimeoutError as error:
             logger.error(error)
         return text
