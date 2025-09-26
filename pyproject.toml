@@ -42,22 +42,12 @@ Source = "https://github.com/wakatime/repl-python-wakatime"
 [tool.setuptools.package-data]
 repl_python_wakatime = ["py.typed", "assets/*"]
 
-# begin: scripts/generate-pyproject.toml.pl
-[tool.setuptools.dynamic.optional-dependencies.dev]
-file = "requirements/dev.txt"
-
-[tool.setuptools.dynamic.optional-dependencies.ipython]
-file = "requirements/ipython.txt"
-
-[tool.setuptools.dynamic.optional-dependencies.keyring]
-file = "requirements/keyring.txt"
-
-[tool.setuptools.dynamic.optional-dependencies.ptipython]
-file = "requirements/ptipython.txt"
-
-[tool.setuptools.dynamic.optional-dependencies.ptpython]
-file = "requirements/ptpython.txt"
-# end: scripts/generate-pyproject.toml.pl
+[tool.setuptools.dynamic.optional-dependencies]
+dev = ["pytest-cov"]
+codestats = ["aiohttp", "keyring"]
+ipython = ["ipython"]
+ptpython = ["ptpython"]
+ptipython = ["ptpython[ptipython]"]
 
 [tool.setuptools_scm]
 write_to = "src/repl_python_wakatime/_version.py"
@@ -90,7 +80,4 @@ exclude_lines = [
 ]
 
 [tool.bandit.assert_used]
-skips = [
-  "*_test.py",
-  "*/test_*.py",
-]
+skips = ["*_test.py", "*/test_*.py"]

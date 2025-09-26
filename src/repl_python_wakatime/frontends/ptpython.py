@@ -44,5 +44,5 @@ class Ptpython(Repl, PromptStyle):
 
         :rtype: AnyFormattedText
         """
-        self.hook()
+        self()
         return self.prompt_style.out_prompt()

@@ -30,4 +30,4 @@ class StopHook(Repl):
         :type _: Event
         :rtype: None
         """
-        self.hook()
+        self()

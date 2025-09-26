@@ -27,5 +27,5 @@ class Ipython(Repl, Prompts):
 
         :rtype: list[tuple[_TokenType, str]]
         """
-        self.hook()
+        self()
         return self.prompts.out_prompt_tokens()

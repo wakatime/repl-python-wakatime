@@ -15,7 +15,7 @@ class Wakatime(Hook):
     filenames: tuple[str, ...] = (".git",)
 
     def __post_init__(self):
-        self.args = {
+        self.data = {
             "category": self.category,
             "plugin": self.plugin,
             "entity-type": "app",
@@ -29,7 +29,7 @@ class Wakatime(Hook):
             f"--{k}={v}" for k, v in args.items()
         ]
 
-    def __call__(self):
+    async def __call__(self) -> None:
         """Send wakatime heartbeat."""
-        self.args["project"] = self.get_project(self.filenames)
-        Popen(self.get_wakatime_args(self.args))
+        self.data["project"] = self.get_project(self.filenames)
+        Popen(self.get_wakatime_args(self.data))

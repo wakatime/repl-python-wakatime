@@ -26,7 +26,6 @@ extensions = [
     "sphinx.ext.viewcode",
     "myst_parser",
     "sphinxcontrib.autofile",
-    "sphinxcontrib.requirements_txt",
 ]
 
 myst_heading_anchors = 3

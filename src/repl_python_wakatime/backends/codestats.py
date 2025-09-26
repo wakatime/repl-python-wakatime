@@ -10,13 +10,11 @@ import json
 import logging
 from dataclasses import dataclass
 from datetime import datetime
-from http.client import HTTPException
 from socket import gethostname
-from ssl import CertificateError
 from time import time
-from urllib.error import URLError
-from urllib.request import Request, urlopen
 
+from aiohttp import ClientSession
+from aiohttp.client import ClientTimeout
 from keyring import get_keyring
 from keyring.errors import NoKeyringError
 
@@ -33,8 +31,8 @@ class CodeStats(Hook):
     service_name: str = "codestats"
     user_name: str = gethostname()
     url: str = "https://codestats.net/api/my/pulses"
-    interval: int = 10  # interval at which stats are sent
-    timeout: int = 2  # request timeout value (in seconds)
+    interval: int = 60  # interval at which stats are sent
+    timeout: ClientTimeout | None = None
 
     def __post_init__(
         self,
@@ -54,11 +52,16 @@ class CodeStats(Hook):
         }
         if not self.headers["X-API-Token"]:
             raise NoKeyringError
+        self.data = {
+            "coded_at": "",
+            "xps": [{"language": self.language_type, "xp": 0}],
+        }
+        self.datetime = datetime.now().astimezone()
+        if self.timeout is None:
+            self.timeout = ClientTimeout(1)
+        self.session = None
 
-        self.xp_dict = {self.language_type: 0}
-        self.time = time()
-
-    def __call__(self, xp: int = 1) -> None:
+    async def __call__(self, xp: int = 1) -> None:
         """Add xp.
 
         Sem sections are super small so this should be quick if it blocks.
@@ -67,53 +70,38 @@ class CodeStats(Hook):
         :type xp: int
         :rtype: None
         """
-        self.xp_dict[self.language_type] += xp
-        if time() - self.time > self.interval:
-            self.send_xp()
-            self.time = time()
+        self.data["xps"][0]["xp"] += xp
+        if time() - self.datetime.timestamp() > self.interval:
+            await self.send_xp()
 
-    def __del__(self) -> None:
-        self.send_xp()
+    async def __del__(self) -> None:
+        await self.send_xp()
 
-    def send_xp(self) -> None:
+    async def send_xp(self) -> str:
         """Send xp.
 
-        :rtype: None
+        :rtype: str
         """
-        if len(self.xp_dict) == 0:
-            return
+        if self.data["xps"][0]["xp"] == 0:
+            return ""
 
-        xp_list = [
-            {"language": ft, "xp": xp} for ft, xp in self.xp_dict.items()
-        ]
-        self.xp_dict = {self.language_type: 0}
-
-        # after lock is released we can send the payload
-        utc_now = datetime.now().astimezone().isoformat()
-        data = json.dumps({
-            "coded_at": f"{utc_now}",
-            "xps": xp_list,
-        }).encode("utf-8")
-        req = Request(url=self.url, data=data, headers=self.headers)
-        error = ""
+        self.datetime = datetime.now().astimezone()
+        self.data["coded_at"] = self.datetime.isoformat()
+        data = json.dumps(self.data).encode("utf-8")
+        text = ""
+        if self.session is None:
+            self.session = ClientSession(
+                base_url=self.url,
+                headers=self.headers,
+                timeout=self.timeout,
+            )
         try:
-            response = urlopen(req, timeout=self.timeout)
-            response.read()
-            # connection might not be closed without .read()
-        except URLError as e:
-            try:
-                # HTTP error
-                error = "{} {}".format(
-                    e.code,  # type: ignore
-                    e.read().decode("utf-8"),  # type: ignore
-                )
-            except AttributeError:
-                # non-HTTP error, eg. no network
-                error = e.reason
-        except HTTPException as e:
-            error = f"HTTPException on send data. \nDoc: {e.__doc__}"
-        except (CertificateError, TimeoutError) as e:
-            # SSL certificate error (eg. a public wifi redirects traffic)
-            error = e
-        if error:
+            async with self.session.post(
+                "/",
+                data=data,
+            ) as resp:
+                text = await resp.text()
+            self.data["xps"][0]["xp"] = 0
+        except TimeoutError as error:
             logger.error(error)
+        return text

@@ -25,5 +25,5 @@ class Python(Repl):
 
         :rtype: str
         """
-        self.hook()
+        self()
         return str(self.ps1)

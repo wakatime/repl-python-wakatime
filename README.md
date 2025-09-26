@@ -138,9 +138,11 @@ program:
 
 ```python
 from repl_python_wakatime.backends.wakatime import Wakatime
+from repl_python_wakatime.frontends import Repl
 
+repl = Repl(Wakatime(language="translate-shell", category="translating"))
 # after each translating
-Wakatime(language="translate-shell", category="translating")()
+repl()
 ```
 
 ## Similar projects

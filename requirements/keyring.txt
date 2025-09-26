@@ -1,4 +1,0 @@
-#!/usr/bin/env -S pip install -r
-# Store your codestats API key to `keyring get codestats HOST_NAME`.
-
-keyring
