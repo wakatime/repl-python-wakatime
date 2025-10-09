@@ -123,11 +123,12 @@ StopHook(Wakatime())
 You can use many hooks at the same time:
 
 ```python
+from repl_python_wakatime.backends.chainedhook import ChainedHook
 from repl_python_wakatime.backends.codestats import CodeStats
 from repl_python_wakatime.backends.wakatime import Wakatime
 from repl_python_wakatime.frontends.python import Python
 
-sys.ps1 = Python(Wakatime() | CodeStats())
+sys.ps1 = Python(ChainedHook(hooks=(Wakatime(), CodeStats())))
 ```
 
 ## APIs

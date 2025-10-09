@@ -5,7 +5,6 @@ r"""Backends
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Self
 
 
 @dataclass
@@ -19,7 +18,6 @@ class Hook:
     frontend: str = "python"
     language: str = "python"
     category: str = "coding"
-    hooks: tuple[Self, ...] = ()
 
     @property
     def plugin(self) -> str:
@@ -57,10 +55,5 @@ class Hook:
                     return parent.name
         return cwd.name
 
-    def __or__(self, hook: Self) -> "Hook":
-        return Hook(hooks=(self, hook))
-
     def __call__(self) -> None:
         r"""Run hook"""
-        for hook in self.hooks:
-            hook()
