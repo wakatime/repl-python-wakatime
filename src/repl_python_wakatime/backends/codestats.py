@@ -15,7 +15,7 @@ from socket import gethostname
 from threading import Event, Lock, Thread
 from time import time
 
-from aiohttp import ClientSession
+from aiohttp import ClientConnectorDNSError, ClientSession
 from aiohttp.client import ClientTimeout
 from keyring import get_keyring
 from keyring.errors import NoKeyringError
@@ -122,6 +122,6 @@ class CodeStats(Hook):
                 text = await resp.text()
             with self.lock:
                 self.data["xps"][0]["xp"] -= xp
-        except TimeoutError as error:
+        except (TimeoutError, ClientConnectorDNSError) as error:
             logger.error(error)
         return text
