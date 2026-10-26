@@ -45,9 +45,7 @@ class CodeStats(Hook):
         self.headers = {
             "Content-Type": "application/json",
             "User-Agent": f"{self.plugin}/{__version__}",
-            "X-API-Token": keyring.get_password(
-                self.service_name, self.user_name
-            ),
+            "X-API-Token": keyring.get_password(self.service_name, self.user_name),
             "Accept": "*/*",
         }
         if not self.headers["X-API-Token"]:
