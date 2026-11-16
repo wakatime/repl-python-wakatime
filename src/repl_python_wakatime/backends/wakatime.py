@@ -25,9 +25,7 @@ class Wakatime(Hook):
 
     @staticmethod
     def get_wakatime_args(args: dict[str, str]) -> list[str]:
-        return ["wakatime-cli", "--write"] + [
-            f"--{k}={v}" for k, v in args.items()
-        ]
+        return ["wakatime-cli", "--write"] + [f"--{k}={v}" for k, v in args.items()]
 
     def __call__(self) -> None:
         """Send wakatime heartbeat."""
